@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ncaa-wsoc-analysis"
+version = "0.1.0"
+description = "NCAA women's soccer exploratory analysis"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pandas>=2.0.0",
+    "numpy>=1.24.0",
+    "matplotlib>=3.7.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "jupyter>=1.0.0",
+    "ipykernel>=6.25.0",
+    "seaborn>=0.13.0",
+    "statsmodels>=0.14.0",
+    "scikit-learn>=1.3.0",
+]
+
+[project.scripts]
+ncaa-wsoc-eda = "ncaa_wsoc.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["ncaa_wsoc*"]

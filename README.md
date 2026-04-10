@@ -26,9 +26,10 @@ pip install -r requirements.txt
 | Path | Purpose |
 |------|---------|
 | `data/` | Local CSV exports (gitignored) |
+| `figures/` | Generated charts (EDA histograms, etc.; default CLI output) |
 | `notebooks/` | Jupyter notebooks |
 
-Add a `scripts/` folder later if you prefer plain Python modules over notebooks.
+The `ncaa_wsoc` CLI writes PNGs under `figures/` by default (`python -m ncaa_wsoc.cli`).
 
 ## Related project
 
