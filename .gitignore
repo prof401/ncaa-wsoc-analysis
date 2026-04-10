@@ -27,3 +27,4 @@ Thumbs.db
 
 # Local data (copied from ncaa-wsoc scraper; do not commit)
 *.csv
+**.png
