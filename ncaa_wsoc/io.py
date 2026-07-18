@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from ncaa_wsoc.config import DEFAULT_TEAMS_CSV
+from ncaa_wsoc.config import DEFAULT_CONTESTS_RAW_CSV, DEFAULT_TEAMS_CSV
 
 
 def load_teams(csv_path: Path | str | None = None, **read_csv_kwargs) -> pd.DataFrame:
@@ -19,4 +19,19 @@ def load_teams(csv_path: Path | str | None = None, **read_csv_kwargs) -> pd.Data
         Forwarded to :func:`pandas.read_csv`.
     """
     path = Path(csv_path) if csv_path is not None else DEFAULT_TEAMS_CSV
+    return pd.read_csv(path, **read_csv_kwargs)
+
+
+def load_contests(csv_path: Path | str | None = None, **read_csv_kwargs) -> pd.DataFrame:
+    """
+    Load the contests table.
+
+    Parameters
+    ----------
+    csv_path
+        Path to contests_raw.csv. Defaults to ``DEFAULT_CONTESTS_RAW_CSV``.
+    **read_csv_kwargs
+        Forwarded to :func:`pandas.read_csv`.
+    """
+    path = Path(csv_path) if csv_path is not None else DEFAULT_CONTESTS_RAW_CSV
     return pd.read_csv(path, **read_csv_kwargs)

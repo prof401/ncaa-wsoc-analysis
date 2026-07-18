@@ -2,9 +2,23 @@
 
 from __future__ import annotations
 
+import re
+from dataclasses import dataclass
 from typing import Any, Iterable
 
 import pandas as pd
+
+_SCORE_RE = re.compile(
+    r"^[WLT]\s+(\d+)-(\d+)(?:\s+\((\d+)\s+OT\))?$",
+    re.IGNORECASE,
+)
+
+
+@dataclass(frozen=True)
+class ParsedResult:
+    goals_for: int
+    goals_against: int
+    ot_periods: int | None  # None = regulation only
 
 
 def season_date_bounds(season: str) -> tuple[pd.Timestamp, pd.Timestamp]:
@@ -25,6 +39,28 @@ def season_date_bounds(season: str) -> tuple[pd.Timestamp, pd.Timestamp]:
     start = pd.Timestamp(year=y_start, month=8, day=1)
     end = pd.Timestamp(year=y_end, month=7, day=31)
     return start, end
+
+
+def parse_scores_from_result(result: Any) -> ParsedResult | None:
+    """
+    Parse goals and optional OT suffix from strings like ``W 2-1 (1 OT)``.
+
+    Returns None when the score segment cannot be parsed.
+    """
+    if result is None or (isinstance(result, float) and pd.isna(result)):
+        return None
+    s = str(result).strip()
+    if not s:
+        return None
+    m = _SCORE_RE.match(s)
+    if not m:
+        return None
+    ot = int(m.group(3)) if m.group(3) is not None else None
+    return ParsedResult(
+        goals_for=int(m.group(1)),
+        goals_against=int(m.group(2)),
+        ot_periods=ot,
+    )
 
 
 def outcome_from_result(result: Any) -> str | None:
